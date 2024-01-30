@@ -44,17 +44,17 @@ public class TicTacToeBoard
         StringBuilder finalOutput = new StringBuilder();
         for(int i = 0; i < 3; i ++)
         {
-            finalOutput.append(String.format("| %s | %s | %s |\n-------------\n", this._board[3 * i], this._board[3 * i + 1], this._board[3 * i + 2]));
+            finalOutput.append(String.format("| %c | %c | %c |\n-------------\n", this._board[3 * i], this._board[3 * i + 1], this._board[3 * i + 2]));
         }
-        System.out.println(finalOutput + ">- Indexes of the board -<");
+        System.out.println(finalOutput + "\n\n>- Indexes of the board -<\n\n");
 
         finalOutput = new StringBuilder();
         for(int i = 0; i < 3; i ++)
         {
-            finalOutput.append(String.format("| %s | %s | %s |\n-------------\n",
-                    (this._board[3 * i] == this._playerMarker || this._board[3 * i] == '+') ? this._board[3 * i] : 3 * i + 1,
-                    (this._board[3 * i + 1] == this._playerMarker || this._board[3 * i + 1] == '+') ? this._board[3 * i + 1] : 3 * i + 2,
-                    (this._board[3 * i + 2] == this._playerMarker || this._board[3 * i + 2] == '+') ? this._board[3 * i + 2] : 3 * i + 3));
+            finalOutput.append(String.format("| %c | %c | %c |\n-------------\n",
+                    (this._board[3 * i] == this._playerMarker || this._board[3 * i] == '+') ? this._board[3 * i] : Character.forDigit(3 * i + 1, 10),
+                    (this._board[3 * i + 1] == this._playerMarker || this._board[3 * i + 1] == '+') ? this._board[3 * i + 1] : Character.forDigit(3 * i + 2, 10),
+                    (this._board[3 * i + 2] == this._playerMarker || this._board[3 * i + 2] == '+') ? this._board[3 * i + 2] : Character.forDigit(3 * i + 3, 10)));
         }
         System.out.println(finalOutput);
     }
@@ -69,13 +69,12 @@ public class TicTacToeBoard
 
             if(!isValidInput)
             {
-                System.out.println("Please enter a valid input: ");
+                System.out.println("Please enter a valid input. Your input is either at an already occupied index or outside of the range.");
                 turns--;
                 continue;
             }
 
-            this._board[userInput] = this._playerMarker;
-            PrintBoard();
+            this._board[userInput - 1] = this._playerMarker;
             DecideWinner();
 
             int computerMarker = _computer.ComputerTurn(GetEmptyPointsInBoard());
@@ -83,6 +82,8 @@ public class TicTacToeBoard
             {
                 this._board[computerMarker] = this._computerMarker;
             }
+            DecideWinner();
+            PrintBoard();
 
             boolean isGameOver = IsGameOver();
             boolean isBoardFilled = IsBoardFilled();
